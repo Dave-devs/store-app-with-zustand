@@ -1,18 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet } from 'react-native';
-
-import EditScreenInfo from '@/components/EditScreenInfo';
+import { Button, Platform, StyleSheet } from 'react-native';
 import { Text, View } from '@/components/Themed';
+import { storage } from '@/store/mmkv';
+import { useMMKVString } from 'react-native-mmkv';
 
 export default function ModalScreen() {
+  const [ username, setUsername ] = useMMKVString('user.name');
+
+  const updateUsername = () => {
+    storage.set('user.name', 'Dave from Davedevs.com')
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Modal</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/modal.tsx" />
-
-      {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+      <Text>Welcome to the APP: {username}</Text>
+      <Button onPress={updateUsername} title='Update'/ >
     </View>
   );
 }
